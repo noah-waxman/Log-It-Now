@@ -20,7 +20,14 @@ jobs:
           cp .env.example .env
 
       - name: Start Docker Compose
-        run: docker compose up
+        run: docker compose up -d --wait --wait-timeout 60
+
+      - name: Confirm db is reachable
+        run: docker compose exec -T db pg_isready -U "${POSTGRES_USER:-postgres}"
+
+      - name: Show status (debug on failure)
+        if: always()
+        run: docker compose ps
 
       - name: Close Docker Containers
         if: always()
