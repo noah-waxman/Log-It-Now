@@ -20,7 +20,15 @@ jobs:
           cp .env.example .env
 
       - name: Start Docker Compose
-        run: docker compose up
+        run: docker compose up -d
+
+      - name: Wait for services to become healthy
+        run: |
+          timeout 120 bash -c '
+            [ "$(docker inspect --format="{{.State.Health.Status}}" db)" == "healthy" ]; do
+            echo "Waiting for database to be healthy..."
+            sleep 2
+          '
 
       - name: Close Docker Containers
         if: always()
