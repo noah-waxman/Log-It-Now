@@ -1,0 +1,10 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "${BACKEND_PORT}:8000" # host:container
+    command: npm run test -- --runInBand
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
