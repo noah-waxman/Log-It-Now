@@ -57,7 +57,7 @@ app.post("/auth/login", async (req, res) => {
   const isMatch = await verifyPassword(password, user.password_hash);
 
   if (!isMatch) {
-    return res.status(404).json({
+    return res.status(401).json({
       message: "Password is incorrect",
     });
   }
@@ -70,11 +70,6 @@ app.post("/auth/login", async (req, res) => {
 
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30m" });
 
-  try {
-    const data = jwt.verify(token, JWT_SECRET);
-  } catch (err) {
-    console.log("Invalid or expired token");
-  }
   res.cookie("authToken", token, {
     httpOnly: true,
     secure: isProduction ? true : false,
