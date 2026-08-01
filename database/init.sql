@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
-    username VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
