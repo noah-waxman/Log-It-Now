@@ -10,3 +10,16 @@ export const pool = new Pool({
 export function query(text, params) {
   return pool.query(text, params);
 }
+
+export async function truncateTable(table) {
+  try {
+    const res = await query(`TRUNCATE TABLE ${table} RESTART IDENTITY CASCADE`);
+
+    if (res.command === "TRUNCATE") {
+      console.log(`${table} cleared successfully`);
+    }
+  } catch (err) {
+    console.error(`Error while truncating ${table}:`, err);
+    throw err;
+  }
+}

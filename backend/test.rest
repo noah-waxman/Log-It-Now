@@ -35,4 +35,3 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8000/test
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOWZiZTJlLWJhNGEtNzY0NC1iZmI0LTA1MWUzNzk5YjkxOSIsIm5hbWUiOiJub2FoIiwiZW1haWwiOiJub2FoQHh4LmNvbSIsImlhdCI6MTc4NTYwMjMzOSwiZXhwIjoxNzg1NjA0MTM5fQ.M2GiWh6t0xk5BmJ5Bwn1famd4LQPuQIIGof-mz2zcrk

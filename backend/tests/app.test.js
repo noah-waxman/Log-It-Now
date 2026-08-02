@@ -1,5 +1,10 @@
 import request from "supertest";
 import app from "../app.js";
+import { truncateTable } from "../db.js";
+
+beforeEach(async () => {
+  await truncateTable("users");
+});
 
 describe("Express App Tests", () => {
   it("GET / should return 200 and a message", async () => {
@@ -34,6 +39,42 @@ describe("POST /auth/register", () => {
       expect(res.body.email).toBe(payload.email);
       expect(res.body.name).toBe(payload.name);
       expect(res.body.id).toBeDefined();
+    });
+  });
+  describe("when an email that already exists is provided", () => {
+    it("returns status 409 and an error", async () => {
+      const payload = {
+        name: "noah",
+        email: "test@example.com",
+        password: "password",
+      };
+
+      await request(app)
+        .post("/auth/register")
+        .set("Content-Type", "application/json")
+        .send(payload);
+
+      const res = await request(app)
+        .post("/auth/register")
+        .set("Content-Type", "application/json")
+        .send(payload);
+
+      expect(res.statusCode).toBe(409);
+      expect(res.body).toHaveProperty("error");
+      expect(res.body.error).toBe("Email already exists");
+    });
+  });
+  describe("when required fields are missing", () => {
+    it.each([
+      [{ email: "test@example.com", password: "password" }, "name"],
+      [{ name: "noah", password: "password" }, "email"],
+      [{ name: "noah", email: "test@example.com" }, "password"],
+      [{}, "all fields"],
+    ])("returns 400 when %s is missing", async (payload) => {
+      const res = await request(app).post("/auth/register").send(payload);
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.error).toBe("Name, email, and password are required.");
     });
   });
 });
