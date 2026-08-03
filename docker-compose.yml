@@ -18,8 +18,25 @@ services:
   backend:
     build: ./backend
     env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${BACKEND_PORT}/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     depends_on:
       db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    env_file: .env
+    environment:
+      VITE_APP_ENV: ${APP_ENV}
+    ports:
+      - "${FRONTEND_PORT}:5173" # host:container
+    depends_on:
+      backend:
         condition: service_healthy
 
 volumes:

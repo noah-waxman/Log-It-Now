@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-twilight: #03045e;
+  --color-french-blue: #023e8a;
+  --color-bright-teal: #0077b6;
+  --color-blue-green: #0096c7;
+  --color-turquoise: #00b4d8;
+  --color-sky-aqua: #48cae4;
+  --color-frost-blue: #90e0ef;
+  --color-frost-blue-light: #ade8f4;
+  --color-light-cyan: #caf0f8;
+
+  --font-sans: "Inter Variable", "Inter", sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+}
